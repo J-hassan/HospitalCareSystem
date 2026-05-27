@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+
+<StackPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f8fafc;" xmlns="http://javafx.com" xmlns:fx="http://javafx.com" fx:controller="com.hospital.controllers.PatientController">
+   <children>
+      <BorderPane>
+         
+         <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #1e3a8a; -fx-padding: 0px 30px;">
+               <children>
+                  <Label text="Patient Portal" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <HBox HBox.hgrow="ALWAYS" />
+                  <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-padding: 8px 18px; -fx-background-radius: 4px; -fx-font-weight: bold; -fx-cursor: hand;" text="🚪 Logout" />
+               </children>
+            </HBox>
+         </top>
+         
+         <center>
+            <TabPane side="LEFT" tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #ffffff;">
+              <tabs>
+                
+                <Tab style="-fx-pref-width: 200px; -fx-pref-height: 60px; -fx-font-weight: bold;" text="Book Session">
+                     <content>
+                        <HBox spacing="25.0" style="-fx-padding: 25px;" alignment="TOP_CENTER">
+                           <children>
+                              
+                              <VBox spacing="12.0" prefWidth="380.0" style="-fx-background-color: #ffffff; -fx-padding: 20px; -fx-background-radius: 8px; -fx-border-color: #cbd5e1; -fx-border-radius: 8px;">
+                                 <children>
+                                    <VBox spacing="4.0" alignment="CENTER">
+                                       <children>
+                                          <Label text="APPOINTMENT SCHEDULER" textFill="#1e3a8a">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Appointment ID:" textFill="#334155" style="-fx-font-weight: bold;" />
+                                          <TextField fx:id="aptIdField" editable="false" promptText="Auto-generated ID" style="-fx-padding: 8px; -fx-background-color: #f1f5f9; -fx-border-color: #cbd5e1; -fx-border-radius: 4px;" />
+                                       </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Doctor Specialist:" textFill="#334155" style="-fx-font-weight: bold;" />
+                                          <ComboBox fx:id="doctorSelectBox" promptText="Select Doctor" prefWidth="350.0" style="-fx-padding: 4px;" />
+                                       </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Date (YYYY-MM-DD):" textFill="#334155" style="-fx-font-weight: bold;" />
+                                          <DatePicker fx:id="aptDatePicker" prefWidth="350.0" style="-fx-padding: 4px;" />
+                                       </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Time Slot:" textFill="#334155" style="-fx-font-weight: bold;" />
+                                          <ComboBox fx:id="priorityComboBox" promptText="Select Time" prefWidth="350.0" style="-fx-padding: 4px;">
+                                             <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="09:00 AM" />
+                                                   <String fx:value="10:00 AM" />
+                                                   <String fx:value="11:00 AM" />
+                                                   <String fx:value="02:00 PM" />
+                                                   <String fx:value="03:00 PM" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                       </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                       <children>
+                                          <Label text="Status:" textFill="#334155" style="-fx-font-weight: bold;" />
+                                          <ComboBox fx:id="aptStatusComboBox" promptText="Select Status" prefWidth="350.0" style="-fx-padding: 4px;">
+                                             <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="Scheduled" />
+                                                   <String fx:value="Cancelled" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
+                                       </children>
+                                    </VBox>
+                                    
+                                    <VBox spacing="10.0" alignment="CENTER">
+                                       <children>
+                                          <Label fx:id="aptMessageLabel" text="" textFill="#10b981" style="-fx-font-weight: bold;" />
+                                          <Button fx:id="bookAppointmentBtn" mnemonicParsing="false" onAction="#handleBookAppointment" prefWidth="200.0" style="-fx-background-color: #1e3a8a; -fx-text-fill: white; -fx-padding: 10px; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 4px;" text="SCHEDULE" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Your Appointment Records Log" style="-fx-font-weight: bold; -fx-font-size: 14px;" textFill="#475569" />
+                                    <TableView fx:id="appointmentsTable" style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1;" VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn fx:id="aptIdCol" prefWidth="110.0" text="Booking ID" />
+                                          <TableColumn fx:id="aptDoctorCol" prefWidth="130.0" text="Assigned Doctor" />
+                                          <TableColumn fx:id="aptDateCol" prefWidth="100.0" text="Date" />
+                                          <TableColumn fx:id="aptTimeCol" prefWidth="90.0" text="Time Slot" />
+                                          <TableColumn fx:id="aptStatusCol" prefWidth="95.0" text="Current Status" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </VBox>
+                              
+                           </children>
+                        </HBox>
+                     </content>
+                  </Tab>
+                  
+                <Tab style="-fx-pref-width: 200px; -fx-pref-height: 60px; -fx-font-weight: bold;" text="Medical History">
+                  <content>
+                     <VBox spacing="15.0" style="-fx-padding: 30px;">
+                        <children>
+                           <Label text="Your Diagnostics &amp; Treatment Records" textFill="#1e293b">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Label>
+                           <TableView fx:id="historyTable" style="-fx-background-color: white; -fx-border-color: #e2e8f0;" VBox.vgrow="ALWAYS">
+                              <columns>
+                                 <TableColumn fx:id="historyIdCol" prefWidth="200.0" text="Record ID" />
+                                 <TableColumn fx:id="historyDateCol" prefWidth="200.0" text="Visit Date" />
+                                 <TableColumn fx:id="historyDoctorCol" prefWidth="200.0" text="Doctor Seen" />
+                                 <TableColumn fx:id="historyDiagnosisCol" prefWidth="400.0" text="Diagnosis" />
+                              </columns>
+                           </TableView>
+                        </children>
+                     </VBox>
+                  </content>
+               </Tab>
+                  
+                  <!-- ====================================== -->
+                  <!-- Invoice Tab -->
+                  <!-- ====================================== -->
+
+                 
+                  <Tab style="-fx-pref-width: 200px; -fx-pref-height: 60px; -fx-font-weight: bold;" text="View Invoice">
+                        <content>
+                           <HBox spacing="30.0" style="-fx-padding: 30px;">
+                              <children>
+                                 <VBox spacing="15.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS">
+                                    <children>
+                                       <Label text="Itemized Statements Breakdown" textFill="#1e293b">
+                                          <font>
+                                             <Font name="System Bold" size="18.0" />
+                                          </font>
+                                       </Label>
+                                       
+                                       <TableView fx:id="invoiceTable" style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1; -fx-background-radius: 6px;" VBox.vgrow="ALWAYS">
+                                          <columns>
+                                             <TableColumn fx:id="billItemCol" prefWidth="300.0" text="Billing Item / Description" />
+                                             <TableColumn fx:id="billCostCol" prefWidth="120.0" text="Cost (Rs.)" />
+                                          </columns>
+                                       </TableView>
+                                    </children>
+                                 </VBox>
+                                 
+                                 <VBox prefWidth="300.0" spacing="20.0" style="-fx-background-color: #f1f5f9; -fx-padding: 25px; -fx-background-radius: 8px; -fx-border-color: #e2e8f0;">
+                                    <children>
+                                       <Label text="Payment Summary" textFill="#475569">
+                                          <font>
+                                             <Font name="System Bold" size="14.0" />
+                                          </font>
+                                       </Label>
+                                       <HBox alignment="CENTER_LEFT">
+                                          <children>
+                                             <Label text="Total Outstanding:" textFill="#0f172a" />
+                                             <HBox HBox.hgrow="ALWAYS" />
+                                             <Label fx:id="totalCostLabel" text="Rs. 0.00" textFill="#1e3a8a">
+                                                <font>
+                                                   <Font name="System Bold" size="20.0" />
+                                                </font>
+                                             </Label>
+                                          </children>
+                                       </HBox>
+                                       <VBox VBox.vgrow="ALWAYS" />
+                                       <Button fx:id="payBillBtn" mnemonicParsing="false" onAction="#handlePayment" prefWidth="250.0" style="-fx-background-color: #10b981; -fx-text-fill: white; -fx-padding: 12px; -fx-background-radius: 6px; -fx-font-weight: bold; -fx-cursor: hand;" text="Clear &amp; Process Invoice" />
+                                    </children>
+                                 </VBox>
+                              </children>
+                           </HBox>
+                        </content>
+                     </Tab>
+                  
+              </tabs>
+            </TabPane>
+         </center>
+         
+      </BorderPane>
+   </children>
+</StackPane>

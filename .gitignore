@@ -1,0 +1,25 @@
+# Compiled Java Class Files
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+
+# Maven Build Directory
+target/
+dist/
+
+# IDE specific files (VS Code, IntelliJ, Eclipse)
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS specific files
+Thumbs.db
+.DS_Store
+
+# Log files
+*.log

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<!-- StackPane ko import kiya gaya ha -->
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+
+<StackPane prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #f0f4f8;" xmlns="http://javafx.com" xmlns:fx="http://javafx.com" fx:controller="com.hospital.controllers.LoginController">
+   <children>
+      
+      <VBox alignment="CENTER" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" maxHeight="600.0" minHeight="600.0" prefHeight="600.0" spacing="18.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+         <padding>
+            <Insets bottom="40.0" left="30.0" right="30.0" top="40.0" />
+         </padding>
+         <children>
+            
+            <!-- Main Header Title -->
+            <Label text="Hospital Care" textFill="#1e3a8a">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            
+            <!-- Subtitle -->
+            <Label text="Sign in to manage your workspace" textFill="#64748b">
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="-10.0" />
+               </VBox.margin>
+            </Label>
+            
+            <!-- Username Field -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Username" textFill="#334155">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="usernameField" promptText="Enter your username" style="-fx-padding: 10px; -fx-background-radius: 5px; -fx-border-color: #cbd5e1; -fx-border-radius: 5px; -fx-background-color: #ffffff;" />
+               </children>
+            </VBox>
+            
+            <!-- Password Field -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Password" textFill="#334155">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="passwordField" promptText="Enter your password" style="-fx-padding: 10px; -fx-background-radius: 5px; -fx-border-color: #cbd5e1; -fx-border-radius: 5px; -fx-background-color: #ffffff;" />
+               </children>
+            </VBox>
+            
+            <!-- Role Selection Dropdown -->
+            <VBox spacing="5.0">
+               <children>
+                  <Label text="Select Portal Role" textFill="#334155">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="roleComboBox" prefWidth="290.0" promptText="Choose your system role" style="-fx-padding: 5px; -fx-background-radius: 5px; -fx-border-color: #cbd5e1; -fx-border-radius: 5px; -fx-background-color: #ffffff;">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="PATIENT" />
+                           <String fx:value="DOCTOR" />
+                           <String fx:value="ADMIN" />
+                        </FXCollections>
+                     </items>
+                  </ComboBox>
+               </children>
+            </VBox>
+            
+            <!-- Error Alert Area (Initially blank) -->
+            <Label fx:id="errorMessageLabel" text="" textFill="#ef4444" wrapText="true">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            
+            <!-- Submit Action Button -->
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" prefWidth="290.0" style="-fx-background-color: #2563eb; -fx-text-fill: #ffffff; -fx-padding: 12px; -fx-background-radius: 5px; -fx-font-weight: bold; -fx-cursor: hand;" text="Sign In System">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            
+         </children>
+      </VBox>
+   </children>
+</StackPane>
