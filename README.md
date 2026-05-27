@@ -16,4 +16,4 @@ A robust, modern Desktop Application built using **JavaFX** and **Maven** design
 ## 💻 Installation & Local Setup
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/J-hassan/HospitalCareSystem.git](https://github.com/J-hassan/HospitalCareSystem.git)
+   git clone https://github.com/J-hassan/HospitalCareSystem.git
