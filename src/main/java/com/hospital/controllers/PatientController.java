@@ -127,10 +127,9 @@ public class PatientController {
 
     }
 
-    /**
-     * Action: Appointment queues transaction pipeline submission request builder
-     * hook
-     */
+    // ========================================
+    // Appointment Tab
+    // ========================================
     @FXML
     void handleBookAppointment(ActionEvent event) {
         String generatedId = aptIdField.getText();
@@ -144,14 +143,12 @@ public class PatientController {
                 selectedTimeSlot == null || selectedTimeSlot.trim().isEmpty() ||
                 selectedStatus == null || selectedStatus.trim().isEmpty()) {
 
-            aptMessageLabel.setText("Please fill all the fields!");
-            aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+            showErrorApt("Please fill all the fields!");
             return;
         }
 
         if (aptDatePicker.getValue().isBefore(java.time.LocalDate.now())) {
-            aptMessageLabel.setText("Appointment date cannot be in the past!");
-            aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+            showErrorApt("Appointment date cannot be in the past!");
             return;
         }
 
@@ -162,28 +159,60 @@ public class PatientController {
                 " | Status: " + selectedStatus);
 
         List<Appointment> appointments = FileManager.loadRecords(FileManager.getAppointmentFile());
-        Appointment appointment = new Appointment(generatedId, SessionManager.getUsername(), selectedDoctor,
-                selectedDate, selectedTimeSlot, selectedStatus);
-        appointments.add(appointment);
-        FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+        if (selectedStatus.equalsIgnoreCase("scheduled")) {
+            aptSheduledHandler(generatedId, SessionManager.getUsername(), selectedDoctor, selectedDate,
+                    selectedTimeSlot, selectedStatus, appointments);
+        } else {
+            aptCancelledHandler(generatedId, appointments);
+        }
 
         refreshAppointmentData();
-
-        aptMessageLabel.setStyle("-fx-text-fill: #00ff00");
-        aptMessageLabel.setText("Appointment Scheduled Successfully!");
 
         doctorSelectBox.setValue(null);
         aptDatePicker.setValue(null);
         priorityComboBox.setValue(null);
         aptStatusComboBox.setValue(null);
 
+        showSuccessApt("");
+
+    }
+
+    private void aptSheduledHandler(String generatedId, String aptPatient, String aptDoctor, String aptDate,
+            String aptTime,
+            String aptStatus, List<Appointment> appointments) {
+        Appointment appointment = new Appointment(generatedId, SessionManager.getUsername(), aptDoctor,
+                aptDate, aptTime, aptStatus);
+        appointments.add(appointment);
+        FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+        showSuccessApt("Appointment Scheduled Successfully!");
+    }
+
+    private void aptCancelledHandler(String generatedId, List<Appointment> appointments) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getApptId().equals(generatedId)) {
+                appointment.setApptStatus("Completed");
+                FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+                showSuccessApt("Appointment cancelled successfully!");
+                return;
+            }
+        }
+    }
+
+    private void showErrorApt(String message) {
+        aptMessageLabel.setText(message);
+        aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+    }
+
+    private void showSuccessApt(String message) {
+        aptMessageLabel.setText(message);
+        aptMessageLabel.setStyle("-fx-text-fill: #10b981; -fx-font-weight: bold;");
+        refreshAppointmentData();
+
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(e -> {
-            aptMessageLabel.setStyle("-fx-text-fill: #ef4444");
-            aptMessageLabel.setText("");
+            aptMessageLabel.setText(message);
         });
         delay.play();
-
     }
 
     /**
@@ -196,10 +225,6 @@ public class PatientController {
         SessionManager.clearCredentials();
         SceneManager.switchScene("login", "Hospital Care - Portal Login");
     }
-
-    // ========================================
-    // Appointment Tab
-    // ========================================
 
     private void refreshAppointmentData() {
         if (aptIdField != null) {

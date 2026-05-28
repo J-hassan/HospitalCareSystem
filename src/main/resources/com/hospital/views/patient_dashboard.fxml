@@ -64,7 +64,7 @@
                                     <VBox spacing="5.0">
                                        <children>
                                           <Label text="Appointment ID:" textFill="#334155" style="-fx-font-weight: bold;" />
-                                          <TextField fx:id="aptIdField" editable="false" promptText="Auto-generated ID" style="-fx-padding: 8px; -fx-background-color: #f1f5f9; -fx-border-color: #cbd5e1; -fx-border-radius: 4px;" />
+                                          <TextField fx:id="aptIdField" editable="true" promptText="Auto-generated ID" style="-fx-padding: 8px; -fx-background-color: #f1f5f9; -fx-border-color: #cbd5e1; -fx-border-radius: 4px;" />
                                        </children>
                                     </VBox>
 

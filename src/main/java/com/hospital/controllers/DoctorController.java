@@ -169,7 +169,6 @@ public class DoctorController {
                 String uniqueIdSuffixBill = UUID.randomUUID().toString().substring(0, 15);
                 String finalIdBill = "BILL-" + uniqueIdSuffixBill;
 
-                // Har checkup ki base fee let's say 500 hai, tests ki fee isme plus hogi
                 double totalAmount = 500.0; // Base Consultation Fee
                 String billServiceDescription = "Doctor Consultation Fee";
 

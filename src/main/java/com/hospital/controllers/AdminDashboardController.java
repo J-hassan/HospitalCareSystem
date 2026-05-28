@@ -37,9 +37,9 @@ import javafx.scene.layout.VBox;
 
 public class AdminDashboardController {
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Sidebar Navigation Widgets
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private Button navHomeBtn;
     @FXML
@@ -55,9 +55,9 @@ public class AdminDashboardController {
     @FXML
     private Button logoutBtn;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Creation Profile Inputs - registration panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private VBox registrationPanel;
     @FXML
@@ -77,9 +77,9 @@ public class AdminDashboardController {
     @FXML
     private Button saveUserBtn;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Home Panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private VBox homePanel;
     @FXML
@@ -101,9 +101,9 @@ public class AdminDashboardController {
     @FXML
     private Label patientCountLabel;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Billing Panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private HBox billingPanel;
     @FXML
@@ -132,9 +132,9 @@ public class AdminDashboardController {
     @FXML
     private TableColumn<Bill, Double> billTotalCol;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Emergency Panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private HBox emergencyPanel;
     @FXML
@@ -159,9 +159,9 @@ public class AdminDashboardController {
     @FXML
     private TableColumn<EmergencyCase, String> emgStatusCol;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Report Panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private HBox reportsPanel;
     @FXML
@@ -169,9 +169,9 @@ public class AdminDashboardController {
     @FXML
     private TextArea reportPreviewArea;
 
-    // ---------------------------------------------
+    // ===============================================-------
     // Appointment panel
-    // ---------------------------------------------
+    // ===============================================-------
     @FXML
     private HBox appointmentsPanel; // Changed from VBox to HBox to support split screen
     @FXML
@@ -205,9 +205,9 @@ public class AdminDashboardController {
 
     @FXML
     public void initialize() {
-        // --------------------------------------
+        // ===============================================
         // App loading default state structure configuration
-        // --------------------------------------
+        // ===============================================
         String errorStyle = "-fx-text-fill: #ef4444";
         errorMessageLabel.setText("");
         errorMessageLabel.setStyle(errorStyle);
@@ -220,41 +220,41 @@ public class AdminDashboardController {
 
         fillComboBoxes();
 
-        // --------------------------------------
+        // ===============================================
         // Setting Count Labels
-        // --------------------------------------
+        // ===============================================
         refreshCountLabels();
 
-        // --------------------------------------
+        // ===============================================
         // home panel users entries
-        // --------------------------------------
+        // ===============================================
         refreshHomePanelData();
 
-        // --------------------------------------
+        // ===============================================
         // Appointment panel
-        // --------------------------------------
+        // ===============================================
         refreshAppointmentData();
 
-        // --------------------------------------
+        // ===============================================
         // Emergency panel
-        // --------------------------------------
+        // ===============================================
         refreshEmergencyData();
 
-        // --------------------------------------
+        // ===============================================
         // Billing panel
-        // --------------------------------------
+        // ===============================================
         refreshBillingData();
 
-        // --------------------------------------
+        // ===============================================
         // Set avtive nav style
-        // --------------------------------------
+        // ===============================================
         setActiveNavStyle(navHomeBtn);
 
     }
 
-    // --------------------------------------
+    // ===============================================
     // fill the comboBoxes with doctors and patiens
-    // --------------------------------------
+    // ===============================================
     private void fillComboBoxes() {
         List<User> users = FileManager.loadRecords(FileManager.getUserFile());
         List<Patient> patients = users.stream()
@@ -272,6 +272,10 @@ public class AdminDashboardController {
         // fill comboBox for patients
         billPatientComboBox.getItems().setAll(patients);
     }
+
+    // ===============================================
+    // Refresh count labels on home panel
+    // ===============================================
 
     private void refreshCountLabels() {
         List<User> users = FileManager.loadRecords(FileManager.getUserFile());
@@ -452,6 +456,10 @@ public class AdminDashboardController {
         }
     }
 
+    // ===============================================
+    // Success and Error messages for user registration
+    // ===============================================
+
     private void showError(String message) {
         errorMessageLabel.setText(message);
         errorMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
@@ -470,6 +478,9 @@ public class AdminDashboardController {
         delay.play();
     }
 
+    // ===============================================
+    // Logout Handler
+    // ===============================================
     @FXML
     void handleLogout(ActionEvent event) {
         System.out.println("Admin logged out.");
@@ -537,10 +548,9 @@ public class AdminDashboardController {
         }
     }
 
-    // --------------------------------------
+    // ===============================================
     // Appointments panel
-    // --------------------------------------
-
+    // ===============================================
     @FXML
     private void handleScheduleAppointment() {
         String aptId = aptIdField.getText();
@@ -556,48 +566,117 @@ public class AdminDashboardController {
                 aptTime == null || aptTime.trim().isEmpty() ||
                 aptStatus == null || aptStatus.trim().isEmpty()) {
 
-            aptMessageLabel.setText("Please fill all the fields!");
-            aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+            showErrorApt("Please fill all the fields!");
             return;
         }
 
         if (aptDatePicker.getValue().isBefore(java.time.LocalDate.now())) {
-            aptMessageLabel.setText("Appointment date cannot be in the past!");
-            aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+            showErrorApt("Appointment date cannot be in the past!");
             return;
         }
 
-        List<Appointment> appointments = FileManager.loadRecords(FileManager.getAppointmentFile());
-        Appointment appointment = new Appointment(aptId, aptPatient, aptDoctor, aptDate, aptTime, aptStatus);
-        appointments.add(appointment);
-        FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
-
-        aptMessageLabel.setText("Appointment Saved Successfully!");
-        aptMessageLabel.setStyle("-fx-text-fill: #10b981; -fx-font-weight: bold;");
-
-        // Save medical history for patient appointment
-        List<MedicalHistory> medicalHistories = FileManager.loadRecords(FileManager.getHistoryFile());
-        String uniqueIdSuffix = UUID.randomUUID().toString().substring(0, 15);
-        String finalId = "HISTORY-" + uniqueIdSuffix;
-        MedicalHistory medicalHistory = new MedicalHistory(finalId, aptDate, aptDoctor, "None", aptPatient);
-        medicalHistories.add(medicalHistory);
-        FileManager.saveRecords(FileManager.getHistoryFile(), medicalHistories);
+        // todo: add the status changed logic here
+        if (aptStatus.equalsIgnoreCase("scheduled")) {
+            // aptStatus = sheduled
+            aptSheduledHandler(aptId, aptPatient, aptDoctor, aptDate, aptTime, aptStatus);
+        } else if (aptStatus.equalsIgnoreCase("completed")) {
+            // aptStatus = completed
+            aptCompletedHandler(aptId);
+        } else {
+            // aptStatus = cancelled
+            aptCancelledHandler(aptId);
+        }
 
         // clear appointment form fields for next entry
         aptDatePicker.setValue(null);
         aptPatientComboBox.setValue(null);
         aptDoctorComboBox.setValue(null);
+        aptTimeComboBox.setValue(null);
+        aptStatusComboBox.setValue(null);
+
         // refresh table for new appointment
         refreshAppointmentData();
+
+        System.out.println("Schedule appointment logic completed successfully.");
+    }
+
+    // private void showError(String message) {
+
+    private void showErrorApt(String message) {
+        aptMessageLabel.setText(message);
+        aptMessageLabel.setStyle("-fx-text-fill: #ef4444; -fx-font-weight: bold;");
+    }
+
+    private void showSuccessApt(String message) {
+        aptMessageLabel.setText(message);
+        aptMessageLabel.setStyle("-fx-text-fill: #10b981; -fx-font-weight: bold;");
+        refreshCountLabels();
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(e -> {
             aptMessageLabel.setText("");
-            showHomePanel(null);
         });
         delay.play();
+    }
 
-        System.out.println("Schedule appointment logic completed successfully.");
+    // Appointment status handlers
+
+    private void aptSheduledHandler(String aptId, String aptPatient, String aptDoctor, String aptDate, String aptTime,
+            String aptStatus) {
+        List<Appointment> appointments = FileManager.loadRecords(FileManager.getAppointmentFile());
+        Appointment appointment = new Appointment(aptId, aptPatient, aptDoctor, aptDate, aptTime, aptStatus);
+        appointments.add(appointment);
+        FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+        showSuccessApt("Appointment Scheduled Successfully");
+    }
+
+    private void aptCompletedHandler(String aptId) {
+        List<Appointment> appointments = FileManager.loadRecords(FileManager.getAppointmentFile());
+        List<Bill> bills = FileManager.loadRecords(FileManager.getBillFile());
+        List<MedicalHistory> medicalHistories = FileManager.loadRecords(FileManager.getHistoryFile());
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getApptId().equals(aptId)) {
+                appointment.setApptStatus("Completed");
+
+                // Save medical history
+                String uniqueIdSuffix = UUID.randomUUID().toString().substring(0, 15);
+                String finalId = "HISTORY-" + uniqueIdSuffix;
+
+                MedicalHistory medicalHistory = new MedicalHistory(finalId, appointment.getApptDate(),
+                        appointment.getApptDoctor(), "None", appointment.getApptPatient());
+                medicalHistories.add(medicalHistory);
+                FileManager.saveRecords(FileManager.getHistoryFile(), medicalHistories);
+
+                String uniqueIdSuffixBill = UUID.randomUUID().toString().substring(0, 15);
+                String finalIdBill = "BILL-" + uniqueIdSuffixBill;
+
+                double totalAmount = 500.0; // Base Consultation Fee
+                String billServiceDescription = "Doctor Consultation Fee ( Routine Checkup )";
+                Bill bill = new Bill(finalIdBill, appointment.getApptPatient(), billServiceDescription, 1, totalAmount);
+                bills.add(bill);
+
+                FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+                FileManager.saveRecords(FileManager.getBillFile(), bills);
+                showSuccessApt("Appointment completed successfully!");
+                return;
+            }
+        }
+        showErrorApt("No matching appointment ID found!");
+    }
+
+    private void aptCancelledHandler(String aptId) {
+        List<Appointment> appointments = FileManager.loadRecords(FileManager.getAppointmentFile());
+        for (Appointment appointment : appointments) {
+            // ID base matching logic (Bug Fixed)
+            if (appointment.getApptId().equals(aptId)) {
+                appointment.setApptStatus("Cancelled");
+                FileManager.saveRecords(FileManager.getAppointmentFile(), appointments);
+                showSuccessApt("Appointment cancelled successfully");
+                return;
+            }
+        }
+        showErrorApt("No matching appointment ID found!");
     }
 
     private void refreshAppointmentData() {
@@ -613,9 +692,9 @@ public class AdminDashboardController {
         appointmentsTable.setItems(FXCollections.observableArrayList(appointments));
     }
 
-    // --------------------------------------
+    // ===============================================
     // Billing Panel
-    // --------------------------------------
+    // ===============================================
     private void refreshBillingData() {
         if (billIdCol != null) {
             billIdCol.setCellValueFactory(new PropertyValueFactory<>("billId"));
@@ -738,9 +817,9 @@ public class AdminDashboardController {
         }
     }
 
-    // --------------------------------------
+    // ===============================================
     // Emergency Panel
-    // --------------------------------------
+    // ===============================================
 
     private void refreshEmergencyData() {
         if (emgIdCol != null) {
@@ -811,9 +890,9 @@ public class AdminDashboardController {
         }
     }
 
-    // --------------------------------------
+    // ===============================================
     // Report Panel
-    // --------------------------------------
+    // ===============================================
 
     @FXML
     private void handleGenerateReport() {
@@ -918,9 +997,9 @@ public class AdminDashboardController {
         }
     }
 
-    // --------------------------------------
+    // ===============================================
     // Different screens methods
-    // --------------------------------------
+    // ===============================================
 
     private void setActiveNavStyle(Button btn) {
         btn.setStyle(
