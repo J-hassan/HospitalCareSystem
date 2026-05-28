@@ -47,9 +47,9 @@ public abstract class User implements Serializable {
         return password;
     }
 
-    public void setPassword(String role) {
-        this.password = password;
-    }
+    // public void setPassword(String role) {
+    // this.password = password;
+    // }
 
     @Override
     public String toString() {

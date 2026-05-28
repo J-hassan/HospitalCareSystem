@@ -7,7 +7,6 @@ import java.util.UUID;
 import com.hospital.models.*;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.File;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -219,22 +218,7 @@ public class AdminDashboardController {
         billMessageLabel.setText("");
         billMessageLabel.setStyle(errorStyle);
 
-        // --------------------------------------
-        // fill the comboBoxes with doctors and patiens
-        // --------------------------------------
-        List<User> users = FileManager.loadRecords(FileManager.getUserFile());
-        List<Patient> patients = users.stream()
-                .filter(u -> u.getRole().equalsIgnoreCase("patient"))
-                .map(u -> (Patient) u)
-                .collect(Collectors.toList());
-        aptPatientComboBox.getItems().setAll(patients);
-
-        List<Doctor> doctors = users.stream()
-                .filter(u -> u.getRole().equalsIgnoreCase("doctor"))
-                .map(u -> (Doctor) u)
-                .collect(Collectors.toList());
-        aptDoctorComboBox.getItems().setAll(doctors);
-        aptDatePicker.setValue(LocalDate.now());
+        fillComboBoxes();
 
         // --------------------------------------
         // Setting Count Labels
@@ -259,7 +243,6 @@ public class AdminDashboardController {
         // --------------------------------------
         // Billing panel
         // --------------------------------------
-        billPatientComboBox.getItems().setAll(patients);
         refreshBillingData();
 
         // --------------------------------------
@@ -267,6 +250,27 @@ public class AdminDashboardController {
         // --------------------------------------
         setActiveNavStyle(navHomeBtn);
 
+    }
+
+    // --------------------------------------
+    // fill the comboBoxes with doctors and patiens
+    // --------------------------------------
+    private void fillComboBoxes() {
+        List<User> users = FileManager.loadRecords(FileManager.getUserFile());
+        List<Patient> patients = users.stream()
+                .filter(u -> u.getRole().equalsIgnoreCase("patient"))
+                .map(u -> (Patient) u)
+                .collect(Collectors.toList());
+        aptPatientComboBox.getItems().setAll(patients);
+
+        List<Doctor> doctors = users.stream()
+                .filter(u -> u.getRole().equalsIgnoreCase("doctor"))
+                .map(u -> (Doctor) u)
+                .collect(Collectors.toList());
+        aptDoctorComboBox.getItems().setAll(doctors);
+        aptDatePicker.setValue(LocalDate.now());
+        // fill comboBox for patients
+        billPatientComboBox.getItems().setAll(patients);
     }
 
     private void refreshCountLabels() {
@@ -335,6 +339,7 @@ public class AdminDashboardController {
         actionComboBox.setValue(null);
 
         refreshCountLabels();
+        fillComboBoxes();
         System.out.println("Registering: " + username + " | Role: " + selectedRole);
 
     }
