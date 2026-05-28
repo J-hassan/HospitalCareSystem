@@ -13,7 +13,9 @@ A robust, modern Desktop Application built using **JavaFX** and **Maven** design
 - **UI Framework:** JavaFX 13 (with FXML and custom CSS styling)
 - **Build Tool:** Maven
 
-## 💻 Installation & Local Setup
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/J-hassan/HospitalCareSystem.git](https://github.com/J-hassan/HospitalCareSystem.git)
+## 💻 Installation
+1.  Go to the [Releases](https://github.com/J-hassan/HospitalCareSystem/releases/tag/v1.0.0) section.
+2.  Download the latest **`HospitalCareSystem-1.0.exe`**.
+3.  Install and run. (Note: Internet connection is required for cloud features).
+4.  *Security Tip:* If Windows SmartScreen appears, click **"More Info"** -> **"Run Anyway"**.
+
